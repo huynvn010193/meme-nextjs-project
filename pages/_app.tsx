@@ -34,7 +34,9 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 	      <![endif]*/}
       </Head>
       <Header />
-      <Component {...pageProps} />;
+      <main>
+        <Component {...pageProps} />;
+      </main>
     </div>
   );
 }
