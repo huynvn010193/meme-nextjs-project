@@ -2,9 +2,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/style.css";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
+import { useMemo } from 'react';
 import { Header } from "../components/Header";
+import { Footer } from "../components/Footer";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
+  const hiddenFooter = useMemo(() => {
+    const excluded = ['/', '/login'];
+    const currentRouter = router.pathname;
+    return excluded.indexOf(currentRouter) !== -1;
+  }, [router]);
+
+  const hiddenHeader = useMemo(() => {
+    const excluded = ['/register', '/login'];
+    const currentRouter = router.pathname;
+    return excluded.indexOf(currentRouter) !== -1;
+  }, [router]);
+
   return (
     <div id="root">
       <Head>
@@ -33,10 +47,13 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         {/*[if lt IE 9]>
 	      <![endif]*/}
       </Head>
-      <Header />
+      {!hiddenHeader && <Header />}
       <main>
         <Component {...pageProps} />;
       </main>
+      {
+        !hiddenFooter && <Footer />
+      }
     </div>
   );
 }
