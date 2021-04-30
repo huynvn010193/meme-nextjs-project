@@ -37,8 +37,8 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
           rel="stylesheet"
         ></link>
-        <link rel="stylesheet" href="fonts/font-awesome/css/font-awesome.css" />
-        <link rel="stylesheet" href="fonts/emotion/style.css" />
+        <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css" />
+        <link rel="stylesheet" href="/fonts/emotion/style.css" />
 
         {/* JAVA SCRIPT */}
         {/* require */}
