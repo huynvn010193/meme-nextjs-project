@@ -8,7 +8,7 @@ import { Footer } from "../components/Footer";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const hiddenFooter = useMemo(() => {
-    const excluded = ['/', '/login'];
+    const excluded = ['/', '/login', '/posts/[postId]'];
     const currentRouter = router.pathname;
     return excluded.indexOf(currentRouter) !== -1;
   }, [router]);
