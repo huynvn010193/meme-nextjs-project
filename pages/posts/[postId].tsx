@@ -3,7 +3,7 @@ import { PostDetailContent } from "../../components/PostDetailContent";
 
 export default function PostDetail() {
   return (
-    <div>
+    <div className="container">
       <div className="row">
         <div className="col-lg-8">
           <PostDetailContent />
@@ -13,5 +13,5 @@ export default function PostDetail() {
         </div>
       </div>
     </div>
-  )
+  );
 }

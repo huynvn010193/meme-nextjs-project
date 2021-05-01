@@ -7,7 +7,7 @@ const PostItem = () => {
             href="bai-viet-chi-tiet.html"
             className="ass1-section__avatar ass1-avatar"
           >
-            <img src="images/avatar-02.png" alt="" />
+            <img src="/images/avatar-02.png" alt="" />
           </a>
           <div>
             <a href="bai-viet-chi-tiet.html" className="ass1-section__name">
@@ -25,7 +25,7 @@ const PostItem = () => {
           </p>
           <div className="ass1-section__image">
             <a href="bai-viet-chi-tiet.html">
-              <img src="images/microphone-1209816_1920.jpg" alt="" />
+              <img src="/images/microphone-1209816_1920.jpg" alt="" />
             </a>
           </div>
         </div>
