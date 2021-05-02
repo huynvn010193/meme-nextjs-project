@@ -1,7 +1,6 @@
 const PostCommentsList = () => {
   return (
     <div>
-      v class="ass1-comments"&gt;
       <div className="ass1-comments__head">
         <div className="ass1-comments__title">214 Bình luận</div>
         <div className="ass1-comments__options">
