@@ -1,4 +1,18 @@
+import { useState } from "react";
+
+interface FormLoginData {
+  email: string;
+  password: string;
+}
+
+const iniFormData: FormLoginData = {
+  email: "",
+  password: "",
+};
+
 const Login = () => {
+  const [formData, setFormData] = useState(iniFormData);
+
   return (
     <div className="ass1-login">
       <div className="ass1-login__logo">
