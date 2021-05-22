@@ -8,3 +8,5 @@
 Add boostrap
 
 - yarn add boostrap @4.0.0
+
+  Isomorphic-fetch.

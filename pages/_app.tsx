@@ -2,19 +2,23 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/style.css";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-import { useMemo } from 'react';
+import { useMemo } from "react";
+import fetch from "isomorphic-fetch";
+import es6Promise from "es6-promise";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 
+es6Promise.polyfill();
+
 function MyApp({ Component, pageProps, router }: AppProps) {
   const hiddenFooter = useMemo(() => {
-    const excluded = ['/', '/login', '/posts/[postId]'];
+    const excluded = ["/", "/login", "/posts/[postId]"];
     const currentRouter = router.pathname;
     return excluded.indexOf(currentRouter) !== -1;
   }, [router]);
 
   const hiddenHeader = useMemo(() => {
-    const excluded = ['/register', '/login'];
+    const excluded = ["/register", "/login"];
     const currentRouter = router.pathname;
     return excluded.indexOf(currentRouter) !== -1;
   }, [router]);
@@ -37,7 +41,10 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
           rel="stylesheet"
         ></link>
-        <link rel="stylesheet" href="/fonts/font-awesome/css/font-awesome.css" />
+        <link
+          rel="stylesheet"
+          href="/fonts/font-awesome/css/font-awesome.css"
+        />
         <link rel="stylesheet" href="/fonts/emotion/style.css" />
 
         {/* JAVA SCRIPT */}
@@ -51,9 +58,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
       <main>
         <Component {...pageProps} />;
       </main>
-      {
-        !hiddenFooter && <Footer />
-      }
+      {!hiddenFooter && <Footer />}
     </div>
   );
 }
