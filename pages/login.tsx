@@ -1,6 +1,8 @@
 import { useState } from "react";
-import fetch from 'isomorphic-fetch';
-import { BASE_URL } from '../constants';
+import fetch from "isomorphic-fetch";
+import { BASE_URL } from "../constants";
+
+import api from "../services/api";
 
 interface FormLoginData {
   email: string;
@@ -11,8 +13,6 @@ const iniFormData: FormLoginData = {
   email: "",
   password: "",
 };
-
-
 
 const Login = () => {
   const [formData, setFormData] = useState(iniFormData);
@@ -28,19 +28,10 @@ const Login = () => {
   const handleSubmit = (evt) => {
     evt.preventDefault();
     const url = `${BASE_URL}/member/login.php`;
-    const config = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(formData)
-    }
-    fetch(url, config)
-      .then(res => res.json())
-      .then(data => {
-        console.log('data', data);
-      })
-  }
+    api.callJson("/member/login.php", formData, "POST").then((data) => {
+      console.log("data", data);
+    });
+  };
 
   return (
     <div className="ass1-login">
