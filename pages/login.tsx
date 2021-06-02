@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { BASE_URL } from "../constants";
+import fetch from "isomorphic-fetch";
 
 import api from "../services/api";
 
@@ -26,12 +27,26 @@ const Login = () => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    const url = `${BASE_URL}/member/login.php`;
-    api
-      .callJson("/member/login.php", { data: formData, method: "POST" })
-      .then((data) => {
-        console.log("data", data);
-      });
+    // const url = `${BASE_URL}/member/login.php`;
+    // api
+    //   .callJson("/member/login.php", { data: formData, method: "POST" })
+    //   .then((data) => {
+    //     console.log("data", data);
+    //   });
+
+    const body = JSON.stringify(formData);
+    const method = 'POST';
+    fetch('api/login', {
+      body,
+      method,
+      headers: {
+        "Content-Type": "application/json"
+      },
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log("data = ", data);
+      })
   };
 
   return (
