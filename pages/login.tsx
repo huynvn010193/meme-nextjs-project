@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { BASE_URL } from "../constants";
 import fetch from "isomorphic-fetch";
-
-import api from "../services/api";
+import { useState } from "react";
+// import Cookies from "js-cookie";
 
 interface FormLoginData {
   email: string;
@@ -35,18 +33,25 @@ const Login = () => {
     //   });
 
     const body = JSON.stringify(formData);
-    const method = 'POST';
-    fetch('api/login', {
+    const method = "POST";
+
+    fetch("api/login", {
       body,
       method,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
     })
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         console.log("data = ", data);
-      })
+
+        // Cách 1: Set ở trình duyệt
+        // Cookies.set("token", data.token, {
+        //   expires: 3,
+        // });
+      });
+    // Cookies.remove("name3");
   };
 
   return (

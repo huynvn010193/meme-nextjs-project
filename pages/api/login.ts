@@ -3,6 +3,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import api from "../../services/api";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  console.log("cookie sv", req.headers.cookie);
+
   const method = req.method;
   if (req.method !== "POST") {
     res.statusCode = 200;
@@ -17,7 +19,12 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         data,
         method,
       });
+      const currentDate = new Date();
+      const nextYear = new Date(currentDate.getFullYear() + 1, currentDate.getMonth());
+      // const add3Day = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate()+3)
       res.statusCode = 200;
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Set-Cookie', `token=${resHeroku.token}; expires=${nextYear.toUTCString()}; Path=/`);
       res.json(resHeroku);
     } catch (e) {
       res.statusCode = 200;
