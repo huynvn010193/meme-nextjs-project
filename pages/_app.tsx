@@ -1,12 +1,13 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/style.css";
 import App, { AppContext, AppProps } from "next/app";
+import cookie from "cookie";
 import Head from "next/head";
 import { useMemo } from "react";
-import fetch from "isomorphic-fetch";
 import es6Promise from "es6-promise";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
+import { parseJwt } from "../helpers";
 
 es6Promise.polyfill();
 
@@ -66,8 +67,9 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
-  console.log("token", appContext.ctx.req.headers.cookie);
-
+  const cookieStr = appContext.ctx.req.headers.cookie;
+  const token = cookie.parse(cookieStr).token;
+  const objUser = parseJwt(token);
   // Check gọi API để user login.
   return { ...appProps };
 };
