@@ -1,6 +1,6 @@
 import fetch from "isomorphic-fetch";
-import { useRouter } from 'next/router';
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 // import Cookies from "js-cookie";
 
 interface FormLoginData {
@@ -16,6 +16,14 @@ const iniFormData: FormLoginData = {
 const Login = () => {
   const router = useRouter();
   const [formData, setFormData] = useState(iniFormData);
+  const errorString = router.query.error;
+
+  useEffect(() => {
+    if (errorString) {
+      alert("Đăng nhập thất bại");
+      window.history.pushState({}, document.title, "/login");
+    }
+  }, [errorString]);
 
   const handleOnChange = (key) => (evt: any) => {
     const value = evt.target.value;
@@ -47,7 +55,6 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => {
         // console.log("data = ", data);
-
         // Cách 1: Set ở trình duyệt
         // Cookies.set("token", data.token, {
         //   expires: 3,
@@ -56,6 +63,12 @@ const Login = () => {
 
     // router.push('/');
     // Cookies.remove("name3");
+  };
+
+  const handleSubmitForm = (evt) => {
+    evt.preventDefault();
+    const formElement = evt.target;
+    formElement.submit();
   };
 
   return (
@@ -69,7 +82,7 @@ const Login = () => {
         <p>Đăng nhập</p>
         <div className="ass1-login__form">
           {/* </div><form action="/api/login" method="POST" onSubmit={handleSubmit}> */}
-          <form action="/api/login" method="POST">
+          <form action="/api/login" method="POST" onSubmit={handleSubmitForm}>
             <input
               // value={formData.email}
               // onChange={handleOnChange("email")}

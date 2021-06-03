@@ -3,7 +3,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import api from "../../services/api";
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
-  console.log("cookie sv", req.headers.cookie);
 
   const method = req.method;
   if (req.method !== "POST") {
@@ -37,12 +36,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.json(resHeroku);
       } else {
         res.statusCode = 302;
-        res.setHeader("Location", "/login?error=DangNhapKhongThanhCong");
+        res.setHeader("Location", "/login?error=failed");
         res.json(resHeroku);
       }
     } catch (e) {
       res.statusCode = 200;
-      console.log("error", e);
       res.json({
         status: 500,
         message: "Interval server Error",
