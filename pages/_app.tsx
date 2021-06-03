@@ -66,6 +66,8 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
+  console.log("token", appContext.ctx.req.headers.cookie);
+
   // Check gọi API để user login.
   return { ...appProps };
 };
