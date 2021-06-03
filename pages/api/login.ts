@@ -20,12 +20,26 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         method,
       });
       const currentDate = new Date();
-      const nextYear = new Date(currentDate.getFullYear() + 1, currentDate.getMonth());
+      const nextYear = new Date(
+        currentDate.getFullYear() + 1,
+        currentDate.getMonth()
+      );
       // const add3Day = new Date(currentDate.getFullYear(),currentDate.getMonth(),currentDate.getDate()+3)
-      res.statusCode = 200;
-      res.setHeader('Content-Type', 'application/json');
-      res.setHeader('Set-Cookie', `token=${resHeroku.token}; expires=${nextYear.toUTCString()}; Path=/`);
-      res.json(resHeroku);
+
+      if (resHeroku.status === 200) {
+        res.statusCode = 302;
+        res.setHeader("Location", "/");
+        res.setHeader("Content-Type", "application/json");
+        res.setHeader(
+          "Set-Cookie",
+          `token=${resHeroku.token}; expires=${nextYear.toUTCString()}; Path=/`
+        );
+        res.json(resHeroku);
+      } else {
+        res.statusCode = 302;
+        res.setHeader("Location", "/login?error=DangNhapKhongThanhCong");
+        res.json(resHeroku);
+      }
     } catch (e) {
       res.statusCode = 200;
       console.log("error", e);

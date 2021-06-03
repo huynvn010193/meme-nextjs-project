@@ -11,17 +11,18 @@ import { Footer } from "../components/Footer";
 es6Promise.polyfill();
 
 function MyApp({ Component, pageProps, router }: AppProps) {
+  const pathname = router.pathname;
   const hiddenFooter = useMemo(() => {
     const excluded = ["/", "/login", "/posts/[postId]"];
-    const currentRouter = router.pathname;
+    const currentRouter = pathname;
     return excluded.indexOf(currentRouter) !== -1;
-  }, [router]);
+  }, [pathname]);
 
   const hiddenHeader = useMemo(() => {
     const excluded = ["/register", "/login"];
-    const currentRouter = router.pathname;
+    const currentRouter = pathname;
     return excluded.indexOf(currentRouter) !== -1;
-  }, [router]);
+  }, [pathname]);
 
   return (
     <div id="root">
