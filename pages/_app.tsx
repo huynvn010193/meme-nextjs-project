@@ -1,5 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/css/style.css";
+import "../styles/header.scss";
+
 import App, { AppContext, AppProps } from "next/app";
 import cookie from "cookie";
 import Head from "next/head";
@@ -9,12 +11,18 @@ import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { parseJwt } from "../helpers";
 import userService from "../services/userService";
-import { userInfo } from "node:os";
+import { useGlobalState } from "../state";
 
 es6Promise.polyfill();
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const pathname = router.pathname;
+  const [currentUser, setCurrentUser] = useGlobalState("currentUser");
+
+  useMemo(() => {
+    setCurrentUser(pageProps.userInfo);
+  }, []);
+
   const hiddenFooter = useMemo(() => {
     const excluded = ["/", "/login", "/posts/[postId]"];
     const currentRouter = pathname;
@@ -69,20 +77,24 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
-  const cookieStr = appContext.ctx.req.headers.cookie || '';
-  const token = cookie.parse(cookieStr).token;
-  const objUser = parseJwt(token);
   let userResponse = null;
-  if (objUser && objUser.id) {
-    userResponse = await userService.getUserById(objUser.id);
-
+  console.log("server-client-site-render");
+  if (typeof window === "undefined") {
+    console.log("server-site-render");
+    const cookieStr = appContext.ctx.req.headers.cookie || "";
+    const token = cookie.parse(cookieStr).token;
+    const objUser = parseJwt(token);
+    if (objUser && objUser.id) {
+      userResponse = await userService.getUserById(objUser.id);
+    }
   }
+
   // Check gọi API để user login.
   return {
     pageProps: {
       ...appProps.pageProps,
-      userInfo: userResponse && userResponse.user
-    }
+      userInfo: userResponse && userResponse.user,
+    },
   };
 };
 

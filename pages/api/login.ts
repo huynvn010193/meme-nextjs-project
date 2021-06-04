@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         data,
         method,
       });
-      const currentDate = new Date();
+      const currentDate = new Date(); 
       const nextYear = new Date(
         currentDate.getFullYear() + 1,
         currentDate.getMonth()
