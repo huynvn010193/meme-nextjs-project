@@ -8,6 +8,8 @@ import es6Promise from "es6-promise";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import { parseJwt } from "../helpers";
+import userService from "../services/userService";
+import { userInfo } from "node:os";
 
 es6Promise.polyfill();
 
@@ -67,11 +69,21 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
-  const cookieStr = appContext.ctx.req.headers.cookie;
+  const cookieStr = appContext.ctx.req.headers.cookie || '';
   const token = cookie.parse(cookieStr).token;
   const objUser = parseJwt(token);
+  let userResponse = null;
+  if (objUser && objUser.id) {
+    userResponse = await userService.getUserById(objUser.id);
+
+  }
   // Check gọi API để user login.
-  return { ...appProps };
+  return {
+    pageProps: {
+      ...appProps.pageProps,
+      userInfo: userResponse && userResponse.user
+    }
+  };
 };
 
 export default MyApp;

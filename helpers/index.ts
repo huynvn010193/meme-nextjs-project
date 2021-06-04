@@ -1,3 +1,5 @@
+import atob from "atob";
+
 export const parseJwt = (token: string) => {
   try {
     let base64Url = token.split(".")[1];
