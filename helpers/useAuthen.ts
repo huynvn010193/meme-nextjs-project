@@ -1,21 +1,22 @@
 import { useEffect } from "react";
-import Cookies from "js-cookie";
 import { parseJwt } from ".";
 import { useRouter } from "next/router";
+import { useGlobalState } from "../state";
 
-const useAuthentication = () => {
-  const token = Cookies.get("token");
+// bắt buộc đăng nhập mới vào dc.
+const useAuthen = () => {
   const router = useRouter();
+  const [token] = useGlobalState("token");
   useEffect(() => {
     const userToken = parseJwt(token);
     if(!(userToken && userToken.id && userToken.email)) {
-      router.push('/');
+      router.push('/login');
     }
   },[token])
 };
 
-const useNotAuthenticated = () => {
-  const token = Cookies.get("token");
+const useNotAuthen = () => {
+  const [token] = useGlobalState("token");
   const router = useRouter();
   useEffect(() => {
     const userToken = parseJwt(token);
@@ -25,4 +26,4 @@ const useNotAuthenticated = () => {
   },[token])
 };
 
-export { useAuthentication, useNotAuthenticated };
+export { useAuthen, useNotAuthen };

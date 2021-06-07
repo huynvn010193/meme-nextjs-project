@@ -1,4 +1,12 @@
 import atob from "atob";
+import { NextPageContext } from "next";
+import cookie from "cookie";
+import Cookies from "js-cookie";
+
+type UserToken = {
+  id: string;
+  email: string;
+}
 
 export const parseJwt = (token: string) => {
   try {
@@ -17,3 +25,17 @@ export const parseJwt = (token: string) => {
     return null;
   }
 };
+
+export const getTokenSSRAndCSS = (ctx: NextPageContext): [string, UserToken | null] => {
+  let token = '';
+  let userToken = null;
+  if (typeof window === "undefined") {
+    const cookieStr = ctx.req.headers.cookie || "";
+    token = cookie.parse(cookieStr).token;
+    userToken = parseJwt(token);
+  } else {
+    token = Cookies.get("token") || "";
+  }
+
+  return [token,userToken];
+}

@@ -3,13 +3,12 @@ import "../assets/css/style.css";
 import "../styles/header.scss";
 
 import App, { AppContext, AppProps } from "next/app";
-import cookie from "cookie";
 import Head from "next/head";
 import { useMemo } from "react";
 import es6Promise from "es6-promise";
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
-import { parseJwt } from "../helpers";
+import { getTokenSSRAndCSS } from "../helpers";
 import userService from "../services/userService";
 import { useGlobalState } from "../state";
 
@@ -17,9 +16,11 @@ es6Promise.polyfill();
 
 function MyApp({ Component, pageProps, router }: AppProps) {
   const pathname = router.pathname;
-  const [currentUser, setCurrentUser] = useGlobalState("currentUser");
+  const [, setToken] = useGlobalState("token");
+  const [, setCurrentUser] = useGlobalState("currentUser");
 
   useMemo(() => {
+    setToken(pageProps.token);
     setCurrentUser(pageProps.userInfo);
   }, []);
 
@@ -78,21 +79,20 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
   let userResponse = null;
+
   console.log("server-client-site-render");
-  if (typeof window === "undefined") {
-    console.log("server-site-render");
-    const cookieStr = appContext.ctx.req.headers.cookie || "";
-    const token = cookie.parse(cookieStr).token;
-    const objUser = parseJwt(token);
-    if (objUser && objUser.id) {
-      userResponse = await userService.getUserById(objUser.id);
+  const [token, userToken] = getTokenSSRAndCSS(appContext.ctx);
+
+  if (typeof window === "undefined" && userToken) {
+    if (userToken.id && userToken.email) {
+      userResponse = await userService.getUserById(userToken.id);
     }
   }
-
   // Check gọi API để user login.
   return {
     pageProps: {
       ...appProps.pageProps,
+      token,
       userInfo: userResponse && userResponse.user,
     },
   };

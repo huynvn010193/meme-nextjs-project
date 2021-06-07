@@ -1,7 +1,9 @@
 import { PostDetailForm } from "../../components/PostDetailForm";
 import { PostDetailSidebar } from "../../components/PostDetailSidebar";
+import { useAuthen } from "../../helpers/useAuthen";
 
 export default function PostCreate() {
+  useAuthen();
   return (
     <div>
       <div className="row">
@@ -13,5 +15,5 @@ export default function PostCreate() {
         </div>
       </div>
     </div>
-  )
+  );
 }

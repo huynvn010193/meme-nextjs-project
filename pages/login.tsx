@@ -1,7 +1,7 @@
 import fetch from "isomorphic-fetch";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useNotAuthenticated } from "../helpers/useAuthentication";
+import { useNotAuthen } from "../helpers/useAuthen";
 import { useGlobalState } from "../state";
 // import Cookies from "js-cookie";
 
@@ -16,7 +16,7 @@ const iniFormData: FormLoginData = {
 };
 
 const Login = () => {
-  useNotAuthenticated();
+  useNotAuthen();
   const router = useRouter();
   const [formData, setFormData] = useState(iniFormData);
   const [userInfo] = useGlobalState("currentUser");
