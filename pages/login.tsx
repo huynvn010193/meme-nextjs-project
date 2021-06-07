@@ -1,8 +1,10 @@
 import fetch from "isomorphic-fetch";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useNotAuthen } from "../helpers/useAuthen";
 import { useGlobalState } from "../state";
+
 // import Cookies from "js-cookie";
 
 interface FormLoginData {
@@ -106,7 +108,9 @@ const Login = () => {
               required
             />
             <div className="ass1-login__send">
-              <a href="dang-ky.html">Đăng ký một tài khoản</a>
+              <Link href="/register">
+                <a>Đăng ký một tài khoản</a>
+              </Link>
               <button type="submit" className="ass1-btn">
                 Đăng nhập
               </button>
