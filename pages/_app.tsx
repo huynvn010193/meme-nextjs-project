@@ -83,10 +83,8 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   console.log("server-client-site-render");
   const [token, userToken] = getTokenSSRAndCSS(appContext.ctx);
 
-  if (typeof window === "undefined" && userToken) {
-    if (userToken.id && userToken.email) {
-      userResponse = await userService.getUserById(userToken.id);
-    }
+  if (typeof window === "undefined" && userToken?.id && userToken?.email) {
+    userResponse = await userService.getUserById(userToken.id);
   }
   // Check gọi API để user login.
   return {

@@ -26,11 +26,11 @@ export const parseJwt = (token: string) => {
   }
 };
 
-export const getTokenSSRAndCSS = (ctx: NextPageContext): [string, UserToken | null] => {
+export const getTokenSSRAndCSS = (ctx?: NextPageContext): [string, UserToken | null] => {
   let token = '';
   let userToken = null;
   if (typeof window === "undefined") {
-    const cookieStr = ctx.req.headers.cookie || "";
+    const cookieStr = ctx?.req?.headers?.cookie || "";
     token = cookie.parse(cookieStr).token;
     userToken = parseJwt(token);
   } else {

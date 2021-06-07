@@ -1,8 +1,21 @@
 import Link from "next/link";
 import { useGlobalState } from "../../state";
+import { useRouter } from "next/router";
+import Cookies from "js-cookie";
 
 const Header = () => {
-  const [userInfo] = useGlobalState('currentUser');
+  const router = useRouter();
+  const [userInfo, setUserInfo] = useGlobalState("currentUser");
+  const [, setToken] = useGlobalState("token");
+  const handleLogout = () => {
+    const check = window.confirm("Bạn có thực sự muốn logout hay không ?");
+    if (check) {
+      Cookies.remove("token");
+      setToken("");
+      setUserInfo(null);
+      router.push("/login");
+    }
+  };
 
   return (
     <header>
@@ -183,23 +196,23 @@ const Header = () => {
           <a href="#" className="ass1-header__btn-upload ass1-btn">
             <i className="icon-Upvote" /> Upload
           </a>
-          {
-            userInfo ? (
-              <div className="wrapper-user">
-                <a className="user-header">
-                  <span className="avatar">
-                    <img src={userInfo.profilepicture} alt="avatar" />
-                  </span>
-                  <span className="email">{userInfo.email}</span>
-                </a>
-                <div className="logout">Logout</div>
+          {userInfo ? (
+            <div className="wrapper-user">
+              <a className="user-header">
+                <span className="avatar">
+                  <img src={userInfo.profilepicture} alt="avatar" />
+                </span>
+                <span className="email">{userInfo.email}</span>
+              </a>
+              <div className="logout" onClick={handleLogout}>
+                Logout
               </div>
-            ) : (
-              <Link href="/login">
-                <a className="ass1-header__btn-upload ass1-btn">Login</a>
-              </Link>
-            )
-          }
+            </div>
+          ) : (
+            <Link href="/login">
+              <a className="ass1-header__btn-upload ass1-btn">Login</a>
+            </Link>
+          )}
         </div>
       </div>
     </header>
