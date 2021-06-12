@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { handleError } from "../helpers";
+import userService from "../services/userService";
+import { useGlobalState } from "../state";
+import Cookies from "js-cookie";
+import { useNotAuthen } from "../helpers/useAuthen";
 
 const initRegisterData = {
   fullname: {
@@ -21,7 +25,18 @@ const initRegisterData = {
 };
 
 const Register = () => {
+  useNotAuthen();
   const [registerData, setRegisterData] = useState(initRegisterData);
+  const [, setToken] = useGlobalState("token");
+  const [, setUserInfo] = useGlobalState("currentUser");
+
+  const isValidate = useMemo((): boolean => {
+    for (let key in registerData) {
+      const error = registerData[key].error;
+      if (error !== "") return false;
+    }
+    return true;
+  }, [registerData]);
 
   const onChangeData = (key: string) => (e: any) => {
     const value = e.target.value;
@@ -36,6 +51,35 @@ const Register = () => {
     });
   };
 
+  const handleRegister = (e) => {
+    e.preventDefault();
+    if (!isValidate) {
+      alert("Dữ liệu nhập vào không hợp lệ");
+      return;
+    }
+    const email = registerData.email.value;
+    const fullname = registerData.fullname.value;
+    const password = registerData.password.value;
+    const repassword = registerData.repassword.value;
+
+    const data = {
+      email,
+      fullname,
+      password,
+      repassword,
+    };
+
+    userService.register(data).then((res) => {
+      if (res.status === 200) {
+        setToken(res.token);
+        setUserInfo(res.user);
+        Cookies.set("token", res.token, { expires: 30 * 12 });
+      } else {
+        alert(res.error);
+      }
+    });
+  };
+
   return (
     <div className="ass1-login">
       <div className="ass1-login__logo">
@@ -46,7 +90,7 @@ const Register = () => {
       <div className="ass1-login__content">
         <p>Đăng ký một tài khoản</p>
         <div className="ass1-login__form">
-          <form action="#">
+          <form action="#" onSubmit={handleRegister}>
             <div className="form-group">
               <input
                 onChange={onChangeData("fullname")}

@@ -10,3 +10,6 @@ Add boostrap
 - yarn add boostrap @4.0.0
 
   Isomorphic-fetch.
+
+* useMemo: nhận vào 1 hàm return 1 giá trị.
+* useCallback: nhận vào 1 hàm và return 1 hàm.

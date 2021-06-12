@@ -58,8 +58,8 @@ export const handleError = (key: string, value: string, password?: string): stri
         error = "";
       }
       break;
-    case "password":
-      if(value.length <= 6) error = 'Mật khẩu quá ngắn';
+    case "password":      
+      if(value.length < 6) error = 'Mật khẩu quá ngắn';
       else error = '';
       break;
     case "repassword":

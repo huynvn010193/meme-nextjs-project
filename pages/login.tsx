@@ -31,45 +31,45 @@ const Login = () => {
     }
   }, [errorString]);
 
-  const handleOnChange = (key) => (evt: any) => {
-    const value = evt.target.value;
-    setFormData({
-      ...formData,
-      [key]: value,
-    });
-  };
+  // const handleOnChange = (key) => (evt: any) => {
+  //   const value = evt.target.value;
+  //   setFormData({
+  //     ...formData,
+  //     [key]: value,
+  //   });
+  // };
 
-  const handleSubmit = (evt) => {
-    evt.preventDefault();
-    // const url = `${BASE_URL}/member/login.php`;
-    // api
-    //   .callJson("/member/login.php", { data: formData, method: "POST" })
-    //   .then((data) => {
-    //     console.log("data", data);
-    //   });
+  // const handleSubmit = (evt) => {
+  //   evt.preventDefault();
+  //   // const url = `${BASE_URL}/member/login.php`;
+  //   // api
+  //   //   .callJson("/member/login.php", { data: formData, method: "POST" })
+  //   //   .then((data) => {
+  //   //     console.log("data", data);
+  //   //   });
 
-    const body = JSON.stringify(formData);
-    const method = "POST";
+  //   const body = JSON.stringify(formData);
+  //   const method = "POST";
 
-    fetch("api/login", {
-      body,
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        // console.log("data = ", data);
-        // Cách 1: Set ở trình duyệt
-        // Cookies.set("token", data.token, {
-        //   expires: 3,
-        // });
-      });
+  //   fetch("api/login", {
+  //     body,
+  //     method,
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       // console.log("data = ", data);
+  //       // Cách 1: Set ở trình duyệt
+  //       // Cookies.set("token", data.token, {
+  //       //   expires: 3,
+  //       // });
+  //     });
 
-    // router.push('/');
-    // Cookies.remove("name3");
-  };
+  //   // router.push('/');
+  //   // Cookies.remove("name3");
+  // };
 
   const handleSubmitForm = (evt) => {
     evt.preventDefault();
