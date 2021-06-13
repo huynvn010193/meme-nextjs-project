@@ -30,6 +30,7 @@ export const getTokenSSRAndCSS = (ctx?: NextPageContext): [string, UserToken | n
   let token = '';
   let userToken = null;
   if (typeof window === "undefined") {
+    // Khi ở client thì header giá trị là undified nên chỉ chạy dc ở server.
     const cookieStr = ctx?.req?.headers?.cookie || "";
     token = cookie.parse(cookieStr).token;
     userToken = parseJwt(token);

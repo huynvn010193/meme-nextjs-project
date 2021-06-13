@@ -15,3 +15,10 @@ Add boostrap
 
 * useMemo: nhận vào 1 hàm return 1 giá trị.
 * useCallback: nhận vào 1 hàm và return 1 hàm.
+
+AppContext: chỉ có thằng app.tsx có thôi vì nó là custom app.
+Còn trong page thì nó có kiểu dữ liệu NextPageContext.
+
+getInitialProps: chạy cả client và server.
+
+React Hooks Globle State.
