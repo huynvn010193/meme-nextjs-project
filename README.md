@@ -11,5 +11,7 @@ Add boostrap
 
   Isomorphic-fetch.
 
+- Tạo ra 1 state cookie vì giao diện sẽ lắng nghe từ state đó để update
+
 * useMemo: nhận vào 1 hàm return 1 giá trị.
 * useCallback: nhận vào 1 hàm và return 1 hàm.

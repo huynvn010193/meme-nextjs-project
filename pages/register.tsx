@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { handleError } from "../helpers";
 import userService from "../services/userService";
 import { useGlobalState } from "../state";
 import Cookies from "js-cookie";
 import { useNotAuthen } from "../helpers/useAuthen";
+import { Button } from "../components/Button";
 
 const initRegisterData = {
   fullname: {
@@ -29,6 +30,7 @@ const Register = () => {
   const [registerData, setRegisterData] = useState(initRegisterData);
   const [, setToken] = useGlobalState("token");
   const [, setUserInfo] = useGlobalState("currentUser");
+  const [loading, setLoading] = useState(false);
 
   const isValidate = useMemo((): boolean => {
     for (let key in registerData) {
@@ -53,6 +55,7 @@ const Register = () => {
 
   const handleRegister = (e) => {
     e.preventDefault();
+    if (loading) return;
     if (!isValidate) {
       alert("Dữ liệu nhập vào không hợp lệ");
       return;
@@ -68,16 +71,21 @@ const Register = () => {
       password,
       repassword,
     };
-
-    userService.register(data).then((res) => {
-      if (res.status === 200) {
-        setToken(res.token);
-        setUserInfo(res.user);
-        Cookies.set("token", res.token, { expires: 30 * 12 });
-      } else {
-        alert(res.error);
-      }
-    });
+    setLoading(true);
+    userService
+      .register(data)
+      .then((res) => {
+        if (res.status === 200) {
+          setToken(res.token);
+          setUserInfo(res.user);
+          Cookies.set("token", res.token, { expires: 30 * 12 });
+        } else {
+          alert(res.error);
+        }
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -161,9 +169,9 @@ const Register = () => {
             </div>
             <div className="ass1-login__send">
               <a href="dang-nhap.html">Đăng nhập</a>
-              <button type="submit" className="ass1-btn">
+              <Button type="submit" className="ass1-btn" isLoading={loading}>
                 Đăng ký
-              </button>
+              </Button>
             </div>
           </form>
         </div>

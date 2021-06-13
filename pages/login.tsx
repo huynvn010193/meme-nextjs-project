@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useNotAuthen } from "../helpers/useAuthen";
 import { useGlobalState } from "../state";
+import { Button } from "../components/Button";
 
 // import Cookies from "js-cookie";
 
@@ -22,6 +23,7 @@ const Login = () => {
   const router = useRouter();
   const [formData, setFormData] = useState(iniFormData);
   const [userInfo] = useGlobalState("currentUser");
+  const [loading, setLoading] = useState(false);
   const errorString = router.query.error;
 
   useEffect(() => {
@@ -73,7 +75,9 @@ const Login = () => {
 
   const handleSubmitForm = (evt) => {
     evt.preventDefault();
+    if (loading) return;
     const formElement = evt.target;
+    setLoading(true);
     formElement.submit();
   };
 
@@ -111,9 +115,9 @@ const Login = () => {
               <Link href="/register">
                 <a>Đăng ký một tài khoản</a>
               </Link>
-              <button type="submit" className="ass1-btn">
+              <Button type="submit" className="ass1-btn" isLoading={loading}>
                 Đăng nhập
-              </button>
+              </Button>
             </div>
           </form>
         </div>
