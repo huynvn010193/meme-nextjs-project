@@ -3,11 +3,12 @@ import { BASE_URL } from '../constants';
 
 type ConfigType = {
   method?: string;
+  token?: string;
   data? : any;
 }
 
 const api = {
-  callJson: async(url: string, { data, method = 'GET' }: ConfigType = {}) => {
+  callJson: async(url: string, { data, method = 'GET', token }: ConfigType = {}) => {
     const _url = `${BASE_URL}${url}`;
     const _config = {
       method,
@@ -15,6 +16,9 @@ const api = {
         "Content-Type": "application/json" 
       },
       body: JSON.stringify(data)
+    }
+    if(token) {
+      _config.headers["Authorization"] = `Bearer ${token}`;
     }
     return fetch(_url, _config).then(res => {
       return res.json()

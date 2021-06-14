@@ -1,6 +1,12 @@
+import React from "react";
+import { PostType } from "../../pages";
 import { PostItem } from "../PostItem";
 
-const PostListItem = () => {
+type PropsType = {
+  listPosts: PostType[];
+};
+
+const PostListItem: React.FC<PropsType> = ({ listPosts }) => {
   return (
     <div className="ass1-section__list">
       <PostItem />

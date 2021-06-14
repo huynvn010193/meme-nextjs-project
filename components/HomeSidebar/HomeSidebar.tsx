@@ -1,4 +1,11 @@
-const HomeSidebar = () => {
+import React from "react";
+import { PostType } from "../../pages";
+
+type HomeSidebarProps = {
+  userPosts: PostType[];
+};
+
+const HomeSidebar: React.FC<HomeSidebarProps> = ({ userPosts }) => {
   return (
     <aside className="ass1-aside">
       <div className="ass1-content-head__t">
