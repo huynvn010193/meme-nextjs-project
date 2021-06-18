@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import { HomeSidebar } from "../components/HomeSidebar";
 import { PostItemList } from "../components/PostListItem";
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import {
+  GetServerSideProps,
+  InferGetServerSidePropsType,
+  NextPageContext,
+} from "next";
+import postService from "../services/postService";
+import { getTokenSSRAndCSS } from "../helpers";
 
 export type PostType = {
   PID: string;
@@ -47,11 +53,22 @@ const Home: HomeProps = ({ listPosts, userPosts }) => {
 };
 
 export const getServerSideProps: GetServerSideProps<HomeDataProps> = async (
-  conext
+  context
 ) => {
+  // Ép kiểu cho thành NextPageContext;
+  const ctx = context as unknown as NextPageContext;
+  const [token, userToken] = getTokenSSRAndCSS(ctx);
+  const userid = userToken?.id;
+  const listPostsPos = postService.getPostPaging();
+  const userPostsPos = postService.getPostByUserId({ userid, token });
+  const [listPostsRes, userPostsRes] = await Promise.all([
+    listPostsPos,
+    userPostsPos,
+  ]);
+
   const props = {
-    listPosts: [],
-    userPosts: [],
+    listPosts: listPostsRes?.posts || [],
+    userPosts: userPostsRes?.posts || [],
   };
   return {
     props,
