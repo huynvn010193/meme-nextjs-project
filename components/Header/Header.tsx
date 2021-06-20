@@ -21,9 +21,11 @@ const Header = () => {
     <header>
       <div className="ass1-header">
         <div className="container">
-          <a href="index.html" className="ass1-logo">
-            ZendVn Meme
-          </a>
+          <Link href={'/'}>
+            <a className="ass1-logo">
+              ZendVn Meme
+            </a>
+          </Link>
           <nav>
             <ul className="ass1-header__menu">
               <li>
@@ -218,7 +220,7 @@ const Header = () => {
           )}
         </div>
       </div>
-    </header>
+    </header >
   );
 };
 

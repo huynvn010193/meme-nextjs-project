@@ -9,7 +9,7 @@ export default function PostDetail() {
           <PostDetailContent />
         </div>
         <div className="col-lg-4">
-          <HomeSidebar />
+          {/* <HomeSidebar /> */}
         </div>
       </div>
     </div>
