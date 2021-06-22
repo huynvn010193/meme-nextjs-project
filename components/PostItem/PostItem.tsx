@@ -1,29 +1,36 @@
-import Link from 'next/link';
+import Link from "next/link";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import vilocal from "dayjs/locale/vi";
 import { PostType } from "../../pages";
 
 type PostItemPros = {
-  post: PostType
-}
+  post: PostType;
+};
+
+dayjs.locale("vi");
+dayjs.extend(relativeTime);
 
 const PostItem: React.FC<PostItemPros> = ({ post }) => {
-  console.log("post.USERID", post.USERID);
+  const timeFormat = dayjs(post.time_added).locale(vilocal).fromNow();
 
   return (
     <div className="ass1-section__item">
       <div className="ass1-section">
         <div className="ass1-section__head">
           <Link href="/user/[userId]" as={`/user/${post.USERID}`}>
-            <a
-              className="ass1-section__avatar ass1-avatar"
-            >
-              <img src={post.profilepicture || "/images/avatar-02.png"} alt={post.fullname} />
+            <a className="ass1-section__avatar ass1-avatar">
+              <img
+                src={post.profilepicture || "/images/avatar-02.png"}
+                alt={post.fullname}
+              />
             </a>
           </Link>
           <div>
             <Link href="/user/[userId]" as={`/user/${post.USERID}`}>
               <a className="ass1-section__name">{post.fullname}</a>
             </Link>
-            <span className="ass1-section__passed">2 giờ trước</span>
+            <span className="ass1-section__passed">{timeFormat}</span>
           </div>
         </div>
         <div className="ass1-section__content">
@@ -37,10 +44,12 @@ const PostItem: React.FC<PostItemPros> = ({ post }) => {
           </div>
         </div>
         <div className="ass1-section__footer">
-          <a href="#" className="ass1-section__btn-comment ass1-btn-icon">
-            <i className="icon-Comment_Full" />
-            <span>{post.count}</span>
-          </a>
+          <Link href="/posts/[postId]" as={`/posts/${post.PID}`}>
+            <a className="ass1-section__btn-comment ass1-btn-icon">
+              <i className="icon-Comment_Full" />
+              <span>{post.count || 0}</span>
+            </a>
+          </Link>
         </div>
       </div>
     </div>
