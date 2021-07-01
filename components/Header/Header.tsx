@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { useGlobalState } from "../../state";
-import { useRouter } from "next/router";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
+import HeaderSearch from "./HeaderSearch";
+import { useGlobalState } from "../../state";
 
 const Header = () => {
   const router = useRouter();
@@ -21,10 +22,8 @@ const Header = () => {
     <header>
       <div className="ass1-header">
         <div className="container">
-          <Link href={'/'}>
-            <a className="ass1-logo">
-              ZendVn Meme
-            </a>
+          <Link href={"/"}>
+            <a className="ass1-logo">ZendVn Meme</a>
           </Link>
           <nav>
             <ul className="ass1-header__menu">
@@ -182,19 +181,7 @@ const Header = () => {
               </li>
             </ul>
           </nav>
-          <div className="ass1-header__search">
-            <form action="#">
-              <label>
-                <input
-                  type="search"
-                  name="search-text"
-                  className="form-control"
-                  placeholder="Nhập từ khóa ..."
-                />
-                <i className="icon-Search" />
-              </label>
-            </form>
-          </div>
+          <HeaderSearch />
           <a href="#" className="ass1-header__btn-upload ass1-btn">
             <i className="icon-Upvote" /> Upload
           </a>
@@ -220,7 +207,7 @@ const Header = () => {
           )}
         </div>
       </div>
-    </header >
+    </header>
   );
 };
 
