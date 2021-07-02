@@ -7,7 +7,6 @@ const HeaderSearch = () => {
 
   const onChange = (e) => {
     setQueryStr(e.target.value);
-    console.log(queryStr);
   };
 
   const handleSubmit = (e) => {
