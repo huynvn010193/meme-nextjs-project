@@ -19,6 +19,9 @@ const postService = {
   },
   getPostSearch: async({ query }) => {
     return api.callJson( `/post/search.php?query=${encodeURI(query)}` )
+  },
+  getCategories: async () => {
+    return api.callJson('/categories/index.php');
   }
 }
 

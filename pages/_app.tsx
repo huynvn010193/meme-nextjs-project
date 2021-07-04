@@ -11,6 +11,7 @@ import { Footer } from "../components/Footer";
 import { getTokenSSRAndCSS } from "../helpers";
 import userService from "../services/userService";
 import { useGlobalState } from "../state";
+import postService from "../services/postService";
 
 es6Promise.polyfill();
 
@@ -18,9 +19,11 @@ function MyApp({ Component, pageProps, router }: AppProps) {
   const pathname = router.pathname;
   const [, setToken] = useGlobalState("token");
   const [, setCurrentUser] = useGlobalState("currentUser");
+  const [, setCategories] = useGlobalState("categories");
 
   useMemo(() => {
     setToken(pageProps.token);
+    setCategories(pageProps.categories);
     setCurrentUser(pageProps.userInfo);
   }, []);
 
@@ -78,20 +81,30 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
-  let userResponse = null;
+  let userPos = null,
+    categoriesPos = null;
 
   console.log("server-client-site-render");
   const [token, userToken] = getTokenSSRAndCSS(appContext.ctx);
 
-  if (typeof window === "undefined" && userToken?.id && userToken?.email) {
-    userResponse = await userService.getUserById(userToken.id);
+  if (typeof window === "undefined") {
+    if (userToken?.id && userToken?.email) {
+      userPos = userService.getUserById(userToken.id);
+    }
+    categoriesPos = postService.getCategories();
   }
+
+  const [userResponse, categoriesRes] = await Promise.all([
+    userPos,
+    categoriesPos,
+  ]);
   // Check gọi API để user login.
   return {
     pageProps: {
       ...appProps.pageProps,
       token,
-      userInfo: userResponse && userResponse.user,
+      categories: categoriesRes?.categories || [],
+      userInfo: userResponse?.user || null,
     },
   };
 };
