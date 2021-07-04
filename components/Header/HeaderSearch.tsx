@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 const HeaderSearch = () => {
   const router = useRouter();
   const [queryStr, setQueryStr] = useState("");
+
+  useEffect(() => {
+    if (router.pathname !== "/search") {
+      setQueryStr("");
+    }
+  }, [router.pathname]);
 
   const onChange = (e) => {
     setQueryStr(e.target.value);
@@ -13,6 +19,8 @@ const HeaderSearch = () => {
     e.preventDefault();
     if (queryStr) {
       router.push(`search?q=${queryStr}`);
+    } else {
+      router.push("/");
     }
   };
 

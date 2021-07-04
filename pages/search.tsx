@@ -12,7 +12,7 @@ interface PropsType {
 
 const SearchPage: NextPage<PropsType> = ({ listPosts }) => {
   const router = useRouter();
-  const searchStr = router.query.q || "";
+  const searchStr = (router.query.q || "") as string;
   useEffect(() => {
     if (!searchStr) {
       router.push("/");
@@ -30,7 +30,13 @@ const SearchPage: NextPage<PropsType> = ({ listPosts }) => {
         className={"ass1-section__wrap row ass1-section__isotope-init"} // default ''
       >
         {listPosts.map((post) => (
-          <PostItem post={post} key={post.PID} customClass="col-lg-6" />
+          <PostItem
+            post={post}
+            key={post.PID}
+            customClass="col-lg-6"
+            isHightlight={true}
+            query={searchStr}
+          />
         ))}
       </Masonry>
     </div>
