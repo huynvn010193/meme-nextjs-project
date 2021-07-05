@@ -22,6 +22,12 @@ const postService = {
   },
   getCategories: async () => {
     return api.callJson('/categories/index.php');
+  },
+  getPostsPagingByCategory: async({ pageSize = 10, currentPage = 1, tagIndex = "" }) => {
+    if(!tagIndex) return null;
+    const params = `pagesize=${pageSize}&currPage=${currentPage}&tagIndex=${tagIndex}`;
+    const url = `/post/getListByCategory.php?${params}`;
+    return api.callJson(url);
   }
 }
 
