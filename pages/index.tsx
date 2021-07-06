@@ -31,12 +31,6 @@ type HomeProps = React.FC<
 >;
 
 const Home: HomeProps = ({ listPosts, userPosts }) => {
-  useEffect(() => {
-    console.log({
-      listPosts,
-      userPosts,
-    });
-  }, []);
 
   return (
     <div className="container">

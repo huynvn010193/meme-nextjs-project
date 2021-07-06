@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 type UserToken = {
   id: string;
   email: string;
-}
+};
 
 export const parseJwt = (token: string) => {
   try {
@@ -26,46 +26,52 @@ export const parseJwt = (token: string) => {
   }
 };
 
-export const getTokenSSRAndCSS = (ctx?: NextPageContext): [string, UserToken | null] => {
-  let token = '';
+export const getTokenSSRAndCSS = (
+  ctx?: NextPageContext
+): [string, UserToken | null] => {
+  let token = "";
   let userToken = null;
   if (typeof window === "undefined") {
-    // Khi ở client thì header giá trị là undified nên chỉ chạy dc ở server.
+    // Khi ở client thì header giá trị là undified => chỉ chạy dc ở server.
     const cookieStr = ctx?.req?.headers?.cookie || "";
     token = cookie.parse(cookieStr).token;
     userToken = parseJwt(token);
   } else {
     token = Cookies.get("token") || "";
   }
-
-  return [token,userToken];
-}
+  return [token, userToken];
+};
 
 export const validateEmail = (email: string): boolean => {
-  const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const re =
+    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(String(email).toLowerCase());
-}
+};
 
-export const handleError = (key: string, value: string, password?: string): string => {
+export const handleError = (
+  key: string,
+  value: string,
+  password?: string
+): string => {
   let error = "";
   if (value.trim().length === 0) {
     return "Trường này là bắt buộc";
   }
-  switch(key) {
+  switch (key) {
     case "email":
-      if(!validateEmail(value)) {
+      if (!validateEmail(value)) {
         error = "Email không hợp lệ";
       } else {
         error = "";
       }
       break;
-    case "password":      
-      if(value.length < 6) error = 'Mật khẩu quá ngắn';
-      else error = '';
+    case "password":
+      if (value.length < 6) error = "Mật khẩu quá ngắn";
+      else error = "";
       break;
     case "repassword":
-      if(value !== password) error = 'Mật khẩu nhập lại không khớp';
-      else error = '';
+      if (value !== password) error = "Mật khẩu nhập lại không khớp";
+      else error = "";
       break;
   }
   return error;
@@ -73,10 +79,13 @@ export const handleError = (key: string, value: string, password?: string): stri
 
 export const hightlightText = (originStr: string, query: string) => {
   const indexStart = originStr.toLowerCase().indexOf(query.toLowerCase());
-  if(indexStart === -1) return originStr;
+  if (indexStart === -1) return originStr;
   const beforeStr = originStr.substring(0, indexStart);
-  const middle = originStr.substring(beforeStr.length,beforeStr.length + query.length);
+  const middle = originStr.substring(
+    beforeStr.length,
+    beforeStr.length + query.length
+  );
   const afterStr = originStr.substring(beforeStr.length + query.length);
 
-  return beforeStr+'<mark>'+middle+'</mark>'+afterStr;
-}
+  return beforeStr + "<mark>" + middle + "</mark>" + afterStr;
+};
