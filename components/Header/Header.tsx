@@ -33,15 +33,17 @@ const Header = () => {
           </a>
           {userInfo ? (
             <div className="wrapper-user">
-              <a className="user-header">
-                <span className="avatar">
-                  <img
-                    src={userInfo.profilepicture || "images/avatar-02.png"}
-                    alt="avatar"
-                  />
-                </span>
-                <span className="email">{userInfo.email}</span>
-              </a>
+              <Link href="/user/[userId]" as={`/user/${userInfo?.USERID}`}>
+                <a className="user-header">
+                  <span className="avatar">
+                    <img
+                      src={userInfo.profilepicture || "images/avatar-02.png"}
+                      alt="avatar"
+                    />
+                  </span>
+                  <span className="email">{userInfo.email}</span>
+                </a>
+              </Link>
               <div className="logout" onClick={handleLogout}>
                 Logout
               </div>

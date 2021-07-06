@@ -1,37 +1,43 @@
-import { NextPage, NextPageContext } from "next"
-import { useRouter } from "next/router"
-import { useEffect } from "react"
-import { PostType } from ".."
-import { UserDetailInfo } from "../../components/UserDetailInfo"
-import { UserDetailPosts } from "../../components/UserDetailPosts"
-import { getTokenSSRAndCSS } from "../../helpers"
-import { useAuthen } from "../../helpers/useAuthen"
-import postService from "../../services/postService"
-import userService from "../../services/userService"
-import { TypeUser } from "../../state"
+import { NextPage, NextPageContext } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { PostType } from "..";
+import { UserDetailInfo } from "../../components/UserDetailInfo";
+import { UserDetailPosts } from "../../components/UserDetailPosts";
+import { getTokenSSRAndCSS } from "../../helpers";
+import { useAuthen } from "../../helpers/useAuthen";
+import postService from "../../services/postService";
+import userService from "../../services/userService";
+import { TypeUser } from "../../state";
 
 type UserDetailProps = {
   userDetailInfo: TypeUser;
   userDetailPosts: PostType[];
-}
+};
 
-const UserDetail: NextPage<UserDetailProps> = ({ userDetailInfo, userDetailPosts }) => {
+const UserDetail: NextPage<UserDetailProps> = ({
+  userDetailInfo,
+  userDetailPosts,
+}) => {
   useAuthen();
   const router = useRouter();
   useEffect(() => {
     if (!userDetailInfo) {
       alert("user không tồn tại");
-      router.push('/');
+      router.push("/");
     }
-  }, [userDetailInfo])
+  }, [userDetailInfo]);
 
   return (
     <div className="container">
-      <UserDetailInfo userDetailInfo={userDetailInfo} />
+      <UserDetailInfo
+        userDetailInfo={userDetailInfo}
+        postCount={userDetailPosts.length}
+      />
       <UserDetailPosts userDetailPosts={userDetailPosts} />
     </div>
-  )
-}
+  );
+};
 
 UserDetail.getInitialProps = async (ctx: NextPageContext) => {
   const userid = ctx.query.userId as string;
@@ -41,8 +47,8 @@ UserDetail.getInitialProps = async (ctx: NextPageContext) => {
   const [userRes, postRes] = await Promise.all([userPos, postPos]);
   return {
     userDetailInfo: userRes?.user || null,
-    userDetailPosts: postRes?.post || [],
-  }
-}
+    userDetailPosts: postRes?.posts || [],
+  };
+};
 
 export default UserDetail;
