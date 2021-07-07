@@ -7,6 +7,12 @@ type RegisterData = {
   repassword: string;
 }
 
+type PasswordData = {
+  oldPassword: string;
+  newPassword: string;
+  reNewPassword: string
+}
+
 const userService = {
   getUserById: async (userId: string) => {
     return api.callJson(`/member/member.php?userid=${userId}`);
@@ -16,8 +22,14 @@ const userService = {
       data,
       method: 'POST'
     })
+  },
+  changePassword: async (data: PasswordData, token) => {
+    return api.callJson("/member/password.php", {
+      data,
+      token,
+      method: 'POST'
+    })
   }
-
 };
 
 export default userService;
