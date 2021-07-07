@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 import { useAuthen } from "../../helpers/useAuthen";
 import userService from "../../services/userService";
 import { useGlobalState } from "../../state";
@@ -18,7 +20,20 @@ const UserChangePassword = () => {
       [key]: value,
     });
   };
-  const [token] = useGlobalState("token");
+  const [token, setToken] = useGlobalState("token");
+  const [, setUserInfo] = useGlobalState("currentUser");
+  const router = useRouter();
+
+  const handleLogout = () => {
+    const check = window.confirm("Thay đổi mật khẩu thành công ?");
+    if (check) {
+      setFormData(initState);
+      Cookies.remove("token");
+      setToken("");
+      setUserInfo(null);
+      router.push("/login");
+    }
+  };
 
   const handleOnSubmit = (e) => {
     e.preventDefault();
@@ -26,8 +41,7 @@ const UserChangePassword = () => {
     // B2: Gọi API
     userService.changePassword(formData, token).then((res) => {
       if (res.status === 200) {
-        alert("Thay đổi mật khẩu thành công");
-        setFormData(initState);
+        handleLogout();
       } else {
         alert(res.error);
       }
