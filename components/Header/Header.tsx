@@ -28,9 +28,11 @@ const Header = () => {
           </Link>
           <HeaderMenu />
           <HeaderSearch />
-          <a href="#" className="ass1-header__btn-upload ass1-btn">
-            <i className="icon-Upvote" /> Upload
-          </a>
+          <Link href={"/posts/create"}>
+            <a className="ass1-header__btn-upload ass1-btn">
+              <i className="icon-Upvote" /> Upload
+            </a>
+          </Link>
           {userInfo ? (
             <div className="wrapper-user">
               <Link href="/user/[userId]" as={`/user/${userInfo?.USERID}`}>
