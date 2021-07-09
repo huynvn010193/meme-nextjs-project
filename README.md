@@ -22,3 +22,5 @@ Còn trong page thì nó có kiểu dữ liệu NextPageContext.
 getInitialProps: chạy cả client và server.
 
 React Hooks Globle State.
+
+Upload Img: chuyển thành base64: https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL

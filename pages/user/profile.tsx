@@ -4,6 +4,7 @@ import { useGlobalState } from "../../state";
 const UserProfile = () => {
   const [currentUser] = useGlobalState("currentUser");
   const [user, setUser] = useState(currentUser);
+  const [objFile, setObjFile] = useState({ file: null, base64URL: '' });
   const handleOnchange = (key: string) => (e) => {
     const value = e.target.value;
     setUser({
@@ -16,24 +17,32 @@ const UserProfile = () => {
     inputFileEl.current.click();
   };
   const handleChangeFile = (e) => {
-    console.log(e.target.files);
     // Không cho phép chọn nhiều file
     const listFiles = e.target.files;
     if (listFiles.length === 0) return;
     const file = listFiles[0] as File;
     if (/\/(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(file.type)) {
-      console.log("hợp lệ");
+      const reader = new FileReader();
+      reader.addEventListener("load", function () {
+        setObjFile({
+          file,
+          base64URL: reader.result as string,
+        })
+      }, false)
+      reader.readAsDataURL(file);
     } else {
       alert("File không hợp lệ");
     }
   };
+
+  const avatarURL = objFile.base64URL || user.profilepicture || "/images/avatar-02.png"
   return (
     <div className="ass1-login">
       <div className="ass1-login__content">
         <p>Profile</p>
         <div className="ass1-login__form">
           <div className="avatar" onClick={handleClickSelectFile}>
-            <img src={user.profilepicture || "/images/avatar-02.png"} alt="" />
+            <img src={avatarURL} alt="" />
           </div>
           <form action="#">
             <input
