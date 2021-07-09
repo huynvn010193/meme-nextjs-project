@@ -1,10 +1,12 @@
 import { useState, useRef } from "react";
+import userService from "../../services/userService";
 import { useGlobalState } from "../../state";
 
 const UserProfile = () => {
-  const [currentUser] = useGlobalState("currentUser");
+  const [currentUser, setCurrentUser] = useGlobalState("currentUser");
   const [user, setUser] = useState(currentUser);
-  const [objFile, setObjFile] = useState({ file: null, base64URL: '' });
+  const [objFile, setObjFile] = useState({ file: null, base64URL: "" });
+  const [token] = useGlobalState("token");
   const handleOnchange = (key: string) => (e) => {
     const value = e.target.value;
     setUser({
@@ -23,19 +25,42 @@ const UserProfile = () => {
     const file = listFiles[0] as File;
     if (/\/(gif|jpe?g|tiff?|png|webp|bmp)$/i.test(file.type)) {
       const reader = new FileReader();
-      reader.addEventListener("load", function () {
-        setObjFile({
-          file,
-          base64URL: reader.result as string,
-        })
-      }, false)
+      reader.addEventListener(
+        "load",
+        function () {
+          setObjFile({
+            file,
+            base64URL: reader.result as string,
+          });
+        },
+        false
+      );
       reader.readAsDataURL(file);
     } else {
       alert("File không hợp lệ");
     }
   };
 
-  const avatarURL = objFile.base64URL || user.profilepicture || "/images/avatar-02.png"
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      fullname: user.fullname,
+      gender: user.gender,
+      description: user.description,
+      avatar: objFile.file,
+    };
+    userService.updateProfile(data, token).then((res) => {
+      if (res.status === 200) {
+        setCurrentUser(res.user);
+        alert("Thay đổi thông tin profile thành công");
+      } else {
+        alert(res.error);
+      }
+    });
+  };
+
+  const avatarURL =
+    objFile.base64URL || user.profilepicture || "/images/avatar-02.png";
   return (
     <div className="ass1-login">
       <div className="ass1-login__content">
@@ -44,7 +69,7 @@ const UserProfile = () => {
           <div className="avatar" onClick={handleClickSelectFile}>
             <img src={avatarURL} alt="" />
           </div>
-          <form action="#">
+          <form action="#" onSubmit={handleSubmit}>
             <input
               value={user.fullname}
               onChange={handleOnchange("fullname")}
@@ -56,6 +81,7 @@ const UserProfile = () => {
             <select
               className="form-control"
               onChange={handleOnchange("gender")}
+              value={user.gender}
             >
               <option value="Gioitinh">Giới tính</option>
               <option value="nam">Nam</option>

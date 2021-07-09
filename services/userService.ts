@@ -43,9 +43,9 @@ const userService = {
     data.append("gender", profileData.gender);
     data.append("description", profileData.description);
     if (profileData.avatar) {
-      data.append("description", profileData.avatar);
+      data.append("avatar", profileData.avatar);
     }
-    return api.callFormData("member/update.php", {
+    return api.callFormData("/member/update.php", {
       data,
       token,
     });
