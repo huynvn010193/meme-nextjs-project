@@ -15,7 +15,7 @@ const UserDetailInfo: React.FC<UserDetailInfoProps> = ({
 
   if (!userDetailInfo) return null;
 
-  const checkUser = currentUser.USERID === userDetailInfo.USERID;
+  const checkUser = currentUser?.USERID === userDetailInfo.USERID;
 
   return (
     <div className="ass1-head-user">
