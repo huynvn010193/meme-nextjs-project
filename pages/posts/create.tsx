@@ -16,6 +16,13 @@ const iniState = {
 export default function PostCreate() {
   useAuthen();
   const [postData, setPosData] = useState(iniState);
+  const onChangeCategory = (newCategory: string[]) => {
+    setPosData({
+      ...postData,
+      category: newCategory,
+    })
+  }
+
   return (
     <div>
       <div className="row">
@@ -23,7 +30,7 @@ export default function PostCreate() {
           <PostDetailForm />
         </div>
         <div className="col-lg-4">
-          <PostDetailSidebar category={postData.category} />
+          <PostDetailSidebar category={postData.category} onChangeCategory={onChangeCategory} />
         </div>
       </div>
     </div>

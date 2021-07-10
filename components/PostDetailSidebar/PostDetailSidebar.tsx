@@ -2,13 +2,22 @@ import { useGlobalState } from "../../state";
 
 type PostDetailSidebarProps = {
   category: string[];
+  onChangeCategory: (category: string[]) => void;
 };
 
-const PostDetailSidebar: React.FC<PostDetailSidebarProps> = ({ category }) => {
+const PostDetailSidebar: React.FC<PostDetailSidebarProps> = ({ category, onChangeCategory }) => {
   const [listCategories] = useGlobalState("categories");
 
   const handleOnChange = (e) => {
-    console.log(e.target.value, e.target.checked);
+    const isCheck = e.target.checked;
+    const value = e.target.value;
+    const findIdx = category.findIndex(cateId => cateId === value);
+    const isExisting = findIdx !== -1;
+    if (!isExisting && isCheck) {
+      onChangeCategory([...category, value]);
+    } else if (!isCheck) {
+      onChangeCategory(category.filter(id => id !== value));
+    }
   };
 
   return (
