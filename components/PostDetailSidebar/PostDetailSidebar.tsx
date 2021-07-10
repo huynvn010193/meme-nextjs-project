@@ -1,31 +1,47 @@
 import { useGlobalState } from "../../state";
+import { Button } from "../Button";
 
 type PostDetailSidebarProps = {
   category: string[];
-  onChangeCategory: (category: string[]) => void;
+  onChangeDetailForm: (key: string, category: string[]) => void;
+  handleSubmitPost: () => void;
+  loading: boolean;
 };
 
-const PostDetailSidebar: React.FC<PostDetailSidebarProps> = ({ category, onChangeCategory }) => {
+const PostDetailSidebar: React.FC<PostDetailSidebarProps> = ({
+  category,
+  onChangeDetailForm,
+  handleSubmitPost,
+  loading,
+}) => {
   const [listCategories] = useGlobalState("categories");
 
   const handleOnChange = (e) => {
     const isCheck = e.target.checked;
     const value = e.target.value;
-    const findIdx = category.findIndex(cateId => cateId === value);
+    const findIdx = category.findIndex((cateId) => cateId === value);
     const isExisting = findIdx !== -1;
     if (!isExisting && isCheck) {
-      onChangeCategory([...category, value]);
+      onChangeDetailForm("category", [...category, value]);
     } else if (!isCheck) {
-      onChangeCategory(category.filter(id => id !== value));
+      onChangeDetailForm(
+        "category",
+        category.filter((id) => id !== value)
+      );
     }
   };
 
   return (
     <aside className="ass1-aside ass1-aside__edit-post">
       <div>
-        <a href="#" className="ass1-btn">
+        <Button
+          className="ass1-btn"
+          onClick={handleSubmitPost}
+          isLoading={loading}
+          type="submit"
+        >
           Đăng bài
-        </a>
+        </Button>
       </div>
       <div className="ass1-aside__edit-post-head">
         <span style={{ display: "block", width: "100%", marginBottom: "10px" }}>
