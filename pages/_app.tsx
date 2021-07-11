@@ -148,8 +148,6 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
     categoriesPos,
   ]);
 
-  console.log({ userResponse, userToken });
-
   // Check gọi API để user login.
   return {
     pageProps: {

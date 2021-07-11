@@ -5,7 +5,7 @@ import { PostItem } from "../PostItem";
 const PostDetailContent = () => {
   return (
     <div className="ass1-section__list">
-      {/* <PostItem /> */}
+      <PostItem />
       <PostCommentsForm />
       <PostCommentsList />
     </div>

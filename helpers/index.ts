@@ -38,6 +38,7 @@ export const getTokenSSRAndCSS = (
     userToken = parseJwt(token);
   } else {
     token = Cookies.get("token") || "";
+    userToken = parseJwt(token);
   }
   return [token, userToken];
 };

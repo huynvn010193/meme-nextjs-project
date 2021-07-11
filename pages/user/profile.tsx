@@ -1,3 +1,4 @@
+import router from "next/router";
 import { useState, useRef } from "react";
 import userService from "../../services/userService";
 import { useGlobalState } from "../../state";
@@ -53,6 +54,7 @@ const UserProfile = () => {
       if (res.status === 200) {
         setCurrentUser(res.user);
         alert("Thay đổi thông tin profile thành công");
+        router.push(`/user/${currentUser.USERID}`);
       } else {
         alert(res.error);
       }

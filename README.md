@@ -26,3 +26,4 @@ React Hooks Globle State.
 Upload Img: chuyển thành base64: https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
 
 Link IMG: https://i.pinimg.com/736x/ff/d2/e0/ffd2e07ed6e6a383bbaf4d208d79c6bd.jpg
+https://i.ytimg.com/vi/mcYoiXQVrzk/maxresdefault.jpg

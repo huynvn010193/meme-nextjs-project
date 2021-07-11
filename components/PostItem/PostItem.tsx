@@ -6,7 +6,7 @@ import { PostType } from "../../pages";
 import { hightlightText } from "../../helpers";
 
 type PostItemPros = {
-  post: PostType;
+  post?: PostType;
   customClass?: string;
   isHightlight?: boolean;
   query?: string;
@@ -21,7 +21,7 @@ const PostItem: React.FC<PostItemPros> = ({
   isHightlight,
   query,
 }) => {
-  const timeFormat = dayjs(post.time_added).locale(vilocal).fromNow();
+  const timeFormat = dayjs(post?.time_added).locale(vilocal).fromNow();
   const defaultClass = "ass1-section__item";
   let classNameCustom = customClass
     ? defaultClass + " " + customClass
@@ -40,6 +40,8 @@ const PostItem: React.FC<PostItemPros> = ({
     }
     return post.post_content;
   };
+
+  if (!post) return null;
 
   return (
     <div className={classNameCustom}>

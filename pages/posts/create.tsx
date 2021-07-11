@@ -1,3 +1,4 @@
+import router from "next/router";
 import { useState } from "react";
 import { PostDetailForm } from "../../components/PostDetailForm";
 import { PostDetailSidebar } from "../../components/PostDetailSidebar";
@@ -18,6 +19,7 @@ const iniState = {
 export default function PostCreate() {
   useAuthen();
   const [postData, setPosData] = useState(iniState);
+  const [currentUser] = useGlobalState("currentUser");
   const [loading, setLoading] = useState(false);
   const [token] = useGlobalState("token");
   const onChangeDetailForm = (key: string, value: any) => {
@@ -34,6 +36,7 @@ export default function PostCreate() {
       .then((res) => {
         if (res.status === 200) {
           alert("Đăng bài viết thành công!");
+          router.push(`/user/${currentUser.USERID}`)
         } else {
           alert(res.error);
         }
