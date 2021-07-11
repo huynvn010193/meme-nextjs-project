@@ -4,14 +4,31 @@ import { HomeSidebar } from "../../components/HomeSidebar";
 import { PostDetailContent } from "../../components/PostDetailContent";
 import { getTokenSSRAndCSS } from "../../helpers";
 import postService from "../../services/postService";
+import { TypeUser } from "../../state";
+
+type TypeCategory = {
+  TAG_ID: string;
+  PID: string;
+  tag_index: string;
+  tag_value: string;
+};
 
 type PostDetailProps = {
-  listPosts: PostType[];
+  postDetail: PostType;
+  categories_post: TypeCategory[];
   userPosts: PostType[];
-}
+};
 
-const PostDetail: NextPage<PostDetailProps> = ({ listPosts, userPosts }) => {
-  console.log("🚀 ~ file: [postId].tsx ~ line 14 ~ userPosts", userPosts);
+const PostDetail: NextPage<PostDetailProps> = ({
+  postDetail,
+  categories_post,
+  userPosts,
+}) => {
+  console.log({
+    postDetail,
+    categories_post,
+  });
+
   return (
     <div className="container">
       <div className="row">
@@ -24,22 +41,24 @@ const PostDetail: NextPage<PostDetailProps> = ({ listPosts, userPosts }) => {
       </div>
     </div>
   );
-}
+};
 
 PostDetail.getInitialProps = async (ctx: NextPageContext) => {
   const [token, userToken] = getTokenSSRAndCSS(ctx);
   const userid = userToken?.id;
-  const postId = ctx.query.postId;
-  const listPostsPos = postService.getPostPaging();
+  const postid = ctx.query.postId;
   const userPostsPos = postService.getPostByUserId({ userid, token });
-  const [listPostsRes, userPostsRes] = await Promise.all([
-    listPostsPos,
+  const postDetailPos = postService.getPostsByPostId({ postid, token });
+  const [userPostsRes, postDetailRes] = await Promise.all([
     userPostsPos,
+    postDetailPos,
   ]);
+
   return {
-    listPosts: listPostsRes?.posts || [],
-    userPosts: userPostsRes?.posts || [],
-  }
-}
+    postDetail: postDetailRes?.data?.post || [],
+    categories_post: postDetailRes?.data?.categories || [],
+    userPosts: userPostsRes?.post || [],
+  };
+};
 
 export default PostDetail;

@@ -59,7 +59,22 @@ const postService = {
     }
 
     return api.callFormData(url,{data, token});
+  },
+  getPostsByPostId: async({ postid, token}) => {
+    if(!postid || !token) {
+      return {
+        status: 500,
+        error: 'Lỗi do mã bài viết hoặc token sai!'
+      }
+    }
+    const url =  `/post/post.php?postid=${postid}`;
+    return api.callJson(
+      url, {
+        token
+      }
+    )
   }
+
 };
 
 export default postService;
