@@ -11,7 +11,6 @@ type HomeSidebarProps = {
 const HomeSidebar: React.FC<HomeSidebarProps> = ({ userPosts }) => {
   const [userInfo] = useGlobalState("currentUser");
 
-  const renderUserPost = () => {};
   return (
     <aside className="ass1-aside">
       <div className="ass1-content-head__t">

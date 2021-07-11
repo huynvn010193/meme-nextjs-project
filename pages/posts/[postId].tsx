@@ -6,7 +6,7 @@ import { getTokenSSRAndCSS } from "../../helpers";
 import postService from "../../services/postService";
 import { TypeUser } from "../../state";
 
-type TypeCategory = {
+export type TypeCategory = {
   TAG_ID: string;
   PID: string;
   tag_index: string;
@@ -15,25 +15,23 @@ type TypeCategory = {
 
 type PostDetailProps = {
   postDetail: PostType;
-  categories_post: TypeCategory[];
+  postCategories: TypeCategory[];
   userPosts: PostType[];
 };
 
 const PostDetail: NextPage<PostDetailProps> = ({
   postDetail,
-  categories_post,
+  postCategories,
   userPosts,
 }) => {
-  console.log({
-    postDetail,
-    categories_post,
-  });
-
   return (
     <div className="container">
       <div className="row">
         <div className="col-lg-8">
-          <PostDetailContent />
+          <PostDetailContent
+            postDetail={postDetail}
+            postCategories={postCategories}
+          />
         </div>
         <div className="col-lg-4">
           <HomeSidebar userPosts={userPosts} />
@@ -56,8 +54,8 @@ PostDetail.getInitialProps = async (ctx: NextPageContext) => {
 
   return {
     postDetail: postDetailRes?.data?.post || [],
-    categories_post: postDetailRes?.data?.categories || [],
-    userPosts: userPostsRes?.post || [],
+    postCategories: postDetailRes?.data?.categories || [],
+    userPosts: userPostsRes?.posts || [],
   };
 };
 
