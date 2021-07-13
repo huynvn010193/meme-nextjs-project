@@ -4,14 +4,14 @@ import api from "./api";
 type ObjImage = {
   file: File | null;
   base64: string;
-}
+};
 
 type TypePostCreate = {
-  post_content: string,
-  url_image: string,
-  category: string[],
-  obj_image: ObjImage,
-}
+  post_content: string;
+  url_image: string;
+  category: string[];
+  obj_image: ObjImage;
+};
 
 const postService = {
   getPostPaging: async ({ pageSize = 3, currentPage = 1 } = {}) => {
@@ -47,34 +47,38 @@ const postService = {
     const url = `/post/getListByCategory.php?${params}`;
     return api.callJson(url);
   },
-  createNewPost: async ({ post_content, url_image, category, obj_image}: TypePostCreate, token: string) => {
-    const url = '/post/addNew.php';
+  createNewPost: async (
+    { post_content, url_image, category, obj_image }: TypePostCreate,
+    token: string
+  ) => {
+    const url = "/post/addNew.php";
     const data = new FormData();
     data.append("post_content", post_content);
     data.append("category", category.toString());
     data.append("url_image", url_image);
 
-    if(obj_image.file) {
-      data.append("obj_image",obj_image.file);
+    if (obj_image.file) {
+      data.append("obj_image", obj_image.file);
     }
 
-    return api.callFormData(url,{data, token});
+    return api.callFormData(url, { data, token });
   },
-  getPostsByPostId: async({ postid, token}) => {
-    if(!postid || !token) {
+  getPostsByPostId: async ({ postid, token }) => {
+    if (!postid || !token) {
       return {
         status: 500,
-        error: 'Lỗi do mã bài viết hoặc token sai!'
-      }
+        error: "Lỗi do mã bài viết hoặc token sai!",
+      };
     }
-    const url =  `/post/post.php?postid=${postid}`;
-    return api.callJson(
-      url, {
-        token
-      }
-    )
-  }
-
+    const url = `/post/post.php?postid=${postid}`;
+    return api.callJson(url, {
+      token,
+    });
+  },
+  getCommentById: async (postid) => {
+    const url = `/comment/comments.php?postid=${postid}`;
+    return api.callJson(url);
+  },
 };
 
 export default postService;

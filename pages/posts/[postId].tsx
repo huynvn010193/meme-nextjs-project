@@ -4,6 +4,7 @@ import { HomeSidebar } from "../../components/HomeSidebar";
 import { PostDetailContent } from "../../components/PostDetailContent";
 import { getTokenSSRAndCSS } from "../../helpers";
 import postService from "../../services/postService";
+import userService from "../../services/userService";
 import { TypeUser } from "../../state";
 
 export type TypeCategory = {
@@ -13,17 +14,31 @@ export type TypeCategory = {
   tag_value: string;
 };
 
+type TypeComment = {
+  CID: string,
+  PID: string,
+  USERID: string,
+  fullname: string,
+  profilepicture: string,
+  comment: string,
+  time_added: string,
+}
+
 type PostDetailProps = {
   postDetail: PostType;
   postCategories: TypeCategory[];
   userPosts: PostType[];
+  comments: TypeComment[];
 };
 
 const PostDetail: NextPage<PostDetailProps> = ({
   postDetail,
   postCategories,
   userPosts,
+  comments
 }) => {
+  console.log("comments", comments);
+
   return (
     <div className="container">
       <div className="row">
@@ -47,15 +62,30 @@ PostDetail.getInitialProps = async (ctx: NextPageContext) => {
   const postid = ctx.query.postId;
   const userPostsPos = postService.getPostByUserId({ userid, token });
   const postDetailPos = postService.getPostsByPostId({ postid, token });
-  const [userPostsRes, postDetailRes] = await Promise.all([
+  const commnetsPos = postService.getCommentById(postid);
+  const [userPostsRes, postDetailRes, commentRes] = await Promise.all([
     userPostsPos,
     postDetailPos,
+    commnetsPos,
   ]);
 
+  const posUserId = postDetailRes?.data?.post?.USERID || '';
+  const userInfoData = await userService.getUserById(posUserId);
+
+  let postDetail = null;
+  if (postDetailRes?.data?.post) {
+    postDetail = {
+      ...postDetailRes?.data?.post,
+      fullname: userInfoData?.user?.fullname,
+      profilepicture: userInfoData?.user?.profilepicture,
+    }
+  }
+
   return {
-    postDetail: postDetailRes?.data?.post || [],
+    postDetail,
     postCategories: postDetailRes?.data?.categories || [],
     userPosts: userPostsRes?.posts || [],
+    comments: commentRes?.comments || [],
   };
 };
 

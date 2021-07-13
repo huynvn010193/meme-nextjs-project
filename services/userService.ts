@@ -1,3 +1,4 @@
+import { TypeUser } from "../state";
 import api from "./api";
 
 type RegisterData = {
@@ -22,7 +23,7 @@ type ProfileData = {
 
 const userService = {
   getUserById: async (userId: string) => {
-    return api.callJson(`/member/member.php?userid=${userId}`);
+    return !userId ? null : api.callJson(`/member/member.php?userid=${userId}`);
   },
   register: async (data: RegisterData) => {
     return api.callJson("/member/register.php", {
