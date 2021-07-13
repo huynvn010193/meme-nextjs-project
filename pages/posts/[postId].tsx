@@ -5,7 +5,6 @@ import { PostDetailContent } from "../../components/PostDetailContent";
 import { getTokenSSRAndCSS } from "../../helpers";
 import postService from "../../services/postService";
 import userService from "../../services/userService";
-import { TypeUser } from "../../state";
 
 export type TypeCategory = {
   TAG_ID: string;
@@ -14,15 +13,15 @@ export type TypeCategory = {
   tag_value: string;
 };
 
-type TypeComment = {
-  CID: string,
-  PID: string,
-  USERID: string,
-  fullname: string,
-  profilepicture: string,
-  comment: string,
-  time_added: string,
-}
+export type TypeComment = {
+  CID: string;
+  PID: string;
+  USERID: string;
+  fullname: string;
+  profilepicture: string;
+  comment: string;
+  time_added: string;
+};
 
 type PostDetailProps = {
   postDetail: PostType;
@@ -35,10 +34,8 @@ const PostDetail: NextPage<PostDetailProps> = ({
   postDetail,
   postCategories,
   userPosts,
-  comments
+  comments,
 }) => {
-  console.log("comments", comments);
-
   return (
     <div className="container">
       <div className="row">
@@ -46,6 +43,7 @@ const PostDetail: NextPage<PostDetailProps> = ({
           <PostDetailContent
             postDetail={postDetail}
             postCategories={postCategories}
+            listComments={comments}
           />
         </div>
         <div className="col-lg-4">
@@ -69,7 +67,7 @@ PostDetail.getInitialProps = async (ctx: NextPageContext) => {
     commnetsPos,
   ]);
 
-  const posUserId = postDetailRes?.data?.post?.USERID || '';
+  const posUserId = postDetailRes?.data?.post?.USERID || "";
   const userInfoData = await userService.getUserById(posUserId);
 
   let postDetail = null;
@@ -78,7 +76,7 @@ PostDetail.getInitialProps = async (ctx: NextPageContext) => {
       ...postDetailRes?.data?.post,
       fullname: userInfoData?.user?.fullname,
       profilepicture: userInfoData?.user?.profilepicture,
-    }
+    };
   }
 
   return {

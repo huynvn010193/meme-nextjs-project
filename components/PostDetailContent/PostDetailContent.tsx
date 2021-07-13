@@ -4,16 +4,18 @@ import { PostCommentsForm } from "../PostCommentForm";
 import { PostCommentsList } from "../PostCommentsList";
 import { PostItem } from "../PostItem";
 import { PostType } from "../../pages";
-import { TypeCategory } from "../../pages/posts/[postId]";
+import { TypeCategory, TypeComment } from "../../pages/posts/[postId]";
 
 type PostDetailContentProp = {
   postDetail: PostType;
   postCategories: TypeCategory[];
+  listComments?: TypeComment[];
 };
 
 const PostDetailContent: React.FC<PostDetailContentProp> = ({
   postDetail,
   postCategories,
+  listComments,
 }) => {
   return (
     <div className="ass1-section__list">
@@ -50,7 +52,7 @@ const PostDetailContent: React.FC<PostDetailContentProp> = ({
         </ul>
       </div>
       <PostCommentsForm />
-      <PostCommentsList />
+      <PostCommentsList listComments={listComments} />
     </div>
   );
 };
