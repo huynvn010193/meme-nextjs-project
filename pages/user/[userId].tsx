@@ -34,7 +34,10 @@ const UserDetail: NextPage<UserDetailProps> = ({
         userDetailInfo={userDetailInfo}
         postCount={userDetailPosts.length}
       />
-      <UserDetailPosts userDetailPosts={userDetailPosts} userDetailInfo={userDetailInfo} />
+      <UserDetailPosts
+        userDetailPosts={userDetailPosts}
+        userDetailInfo={userDetailInfo}
+      />
     </div>
   );
 };

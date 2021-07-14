@@ -172,6 +172,7 @@ select.form-control:focus {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;
+  cursor: pointer;
 }
 .ass1-btn i {
   margin-right: 12px;

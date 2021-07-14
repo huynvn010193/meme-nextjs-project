@@ -4,12 +4,14 @@ import relativeTime from "dayjs/plugin/relativeTime";
 import vilocal from "dayjs/locale/vi";
 import { PostType } from "../../pages";
 import { hightlightText } from "../../helpers";
+import router from "next/router";
 
 type PostItemPros = {
   post?: PostType;
   customClass?: string;
   isHightlight?: boolean;
   query?: string;
+  isOwnder?: boolean;
 };
 
 dayjs.locale("vi");
@@ -20,6 +22,7 @@ const PostItem: React.FC<PostItemPros> = ({
   customClass,
   isHightlight,
   query,
+  isOwnder,
 }) => {
   const timeFormat = dayjs(post?.time_added).locale(vilocal).fromNow();
   const defaultClass = "ass1-section__item";
@@ -41,29 +44,48 @@ const PostItem: React.FC<PostItemPros> = ({
     return post.post_content;
   };
 
+  const handleClickEdit = (postid: string) => {
+    return router.push(`/posts/${postid}/edit`);
+  };
+
   if (!post) return null;
 
   return (
     <div className={classNameCustom}>
       <div className="ass1-section">
-        <div className="ass1-section__head">
-          <Link href="/user/[userId]" as={`/user/${post.USERID}`}>
-            <a className="ass1-section__avatar ass1-avatar">
-              <img
-                src={post.profilepicture || "/images/avatar-02.png"}
-                alt={post.fullname}
-              />
-            </a>
-          </Link>
-          <div>
+        <div
+          className="ass1-section__head"
+          style={{ justifyContent: "space-between" }}
+        >
+          <div style={{ display: "flex" }}>
             <Link href="/user/[userId]" as={`/user/${post.USERID}`}>
-              <a
-                className="ass1-section__name"
-                dangerouslySetInnerHTML={{ __html: renderFullName() }}
-              />
+              <a className="ass1-section__avatar ass1-avatar">
+                <img
+                  src={post.profilepicture || "/images/avatar-02.png"}
+                  alt={post.fullname}
+                />
+              </a>
             </Link>
-            <span className="ass1-section__passed">{timeFormat}</span>
+            <div>
+              <Link href="/user/[userId]" as={`/user/${post.USERID}`}>
+                <a
+                  className="ass1-section__name"
+                  dangerouslySetInnerHTML={{ __html: renderFullName() }}
+                />
+              </Link>
+              <span className="ass1-section__passed">{timeFormat}</span>
+            </div>
           </div>
+          {isOwnder && (
+            <div>
+              <button
+                className="ass1-btn"
+                onClick={() => handleClickEdit(post.PID)}
+              >
+                Edit
+              </button>
+            </div>
+          )}
         </div>
         <div className="ass1-section__content">
           <p dangerouslySetInnerHTML={{ __html: renderContent() }}></p>

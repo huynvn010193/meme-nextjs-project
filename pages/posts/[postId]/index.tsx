@@ -1,10 +1,10 @@
 import { NextPage, NextPageContext } from "next";
-import { PostType } from "..";
-import { HomeSidebar } from "../../components/HomeSidebar";
-import { PostDetailContent } from "../../components/PostDetailContent";
-import { getTokenSSRAndCSS } from "../../helpers";
-import postService from "../../services/postService";
-import userService from "../../services/userService";
+import { PostType } from "../..";
+import { HomeSidebar } from "../../../components/HomeSidebar";
+import { PostDetailContent } from "../../../components/PostDetailContent";
+import { getTokenSSRAndCSS } from "../../../helpers";
+import postService from "../../../services/postService";
+import userService from "../../../services/userService";
 
 export type TypeCategory = {
   TAG_ID: string;

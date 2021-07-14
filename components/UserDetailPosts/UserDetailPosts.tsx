@@ -11,7 +11,7 @@ type UserDetailPostsProps = {
 
 const UserDetailPosts: React.FC<UserDetailPostsProps> = ({
   userDetailPosts,
-  userDetailInfo
+  userDetailInfo,
 }) => {
   const [currentUser] = useGlobalState("currentUser");
   if (!userDetailInfo) return null;
@@ -21,7 +21,12 @@ const UserDetailPosts: React.FC<UserDetailPostsProps> = ({
       className={"ass1-section__wrap row ass1-section__isotope-init"} // default ''
     >
       {userDetailPosts.map((post) => (
-        <PostItem post={post} key={post.PID} customClass="col-lg-6" />
+        <PostItem
+          post={post}
+          key={post.PID}
+          customClass="col-lg-6"
+          isOwnder={checkUser}
+        />
       ))}
     </Masonry>
   );
