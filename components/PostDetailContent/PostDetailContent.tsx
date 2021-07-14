@@ -5,6 +5,10 @@ import { PostCommentsList } from "../PostCommentsList";
 import { PostItem } from "../PostItem";
 import { PostType } from "../../pages";
 import { TypeCategory, TypeComment } from "../../pages/posts/[postId]";
+import { useState } from "react";
+import postService from "../../services/postService";
+import { useRouter } from "next/router";
+import { useGlobalState } from "../../state";
 
 type PostDetailContentProp = {
   postDetail: PostType;
@@ -15,8 +19,24 @@ type PostDetailContentProp = {
 const PostDetailContent: React.FC<PostDetailContentProp> = ({
   postDetail,
   postCategories,
-  listComments,
+  listComments: initListComment,
 }) => {
+  const [listComments, setListComments] = useState(initListComment);
+  const router = useRouter();
+  const postid = router.query.postId as string;
+  const [token] = useGlobalState("token");
+  const handleSubmitForm = async (commnetValue: string) => {
+    try {
+      const result = await postService.postComment(postid, commnetValue, token);
+      if (result.status !== 200) throw new Error("Đăng bình luận không thành công!");
+      const listCmtRes = await postService.getCommentById(postid);
+      if (result.status === 200) {
+        setListComments(listCmtRes.comments);
+      }
+    } catch (e) {
+      // Khi throw Error thì chạy vào trong catch
+    }
+  }
   return (
     <div className="ass1-section__list">
       <PostItem post={postDetail} />
@@ -25,18 +45,6 @@ const PostDetailContent: React.FC<PostDetailContentProp> = ({
           <strong>Danh mục: </strong>
         </h5>
         <ul>
-          {/* <li key="1">
-            <a href="#">Running man</a>
-          </li>
-          <li key="2">
-            <a href="#">Ảnh bựa</a>
-          </li>
-          <li key="3">
-            <a href="#">FapTV</a>
-          </li>
-          <li key="4">
-            <a href="#">Video cảm động</a>
-          </li> */}
           {postCategories.map((obj) => {
             return (
               <li key={obj.TAG_ID}>
@@ -51,7 +59,7 @@ const PostDetailContent: React.FC<PostDetailContentProp> = ({
           })}
         </ul>
       </div>
-      <PostCommentsForm />
+      <PostCommentsForm handleSubmitForm={handleSubmitForm} />
       <PostCommentsList listComments={listComments} />
     </div>
   );

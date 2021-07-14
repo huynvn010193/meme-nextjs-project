@@ -57,7 +57,7 @@ const PostDetail: NextPage<PostDetailProps> = ({
 PostDetail.getInitialProps = async (ctx: NextPageContext) => {
   const [token, userToken] = getTokenSSRAndCSS(ctx);
   const userid = userToken?.id;
-  const postid = ctx.query.postId;
+  const postid = ctx.query.postId as string;
   const userPostsPos = postService.getPostByUserId({ userid, token });
   const postDetailPos = postService.getPostsByPostId({ postid, token });
   const commnetsPos = postService.getCommentById(postid);
