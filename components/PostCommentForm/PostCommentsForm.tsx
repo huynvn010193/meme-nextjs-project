@@ -1,27 +1,34 @@
 import { useState } from "react";
 
 type PostCommentsFormProps = {
-  handleSubmitForm: (value: string) => void,
-}
+  handleSubmitForm: (value: string, callback: (e?: Error) => void) => void;
+};
 
-const PostCommentsForm: React.FC<PostCommentsFormProps> = ({ handleSubmitForm }) => {
-  const [commentValue, setCommentValue] = useState('');
+const PostCommentsForm: React.FC<PostCommentsFormProps> = ({
+  handleSubmitForm,
+}) => {
+  const [loading, setLoading] = useState(false);
+  const [commentValue, setCommentValue] = useState("");
   const handleChangeComment = (e) => {
     if (e.target.value.length <= 180) {
       setCommentValue(e.target.value);
     } else {
-      alert("bạn không thể nhập hơn 180 ký tự")
+      alert("bạn không thể nhập hơn 180 ký tự");
     }
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (loading) return;
     if (commentValue.trim().length !== 0) {
-      handleSubmitForm(commentValue);
+      handleSubmitForm(commentValue, (e) => {
+        setLoading(false);
+        setCommentValue("");
+      });
     } else {
       alert("Vui lòng nhập nội dung bình luận");
     }
-  }
+  };
   return (
     <div className="ass1-add-comment">
       <form onSubmit={handleSubmit}>

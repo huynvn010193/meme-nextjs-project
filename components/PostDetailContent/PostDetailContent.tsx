@@ -5,7 +5,7 @@ import { PostCommentsList } from "../PostCommentsList";
 import { PostItem } from "../PostItem";
 import { PostType } from "../../pages";
 import { TypeCategory, TypeComment } from "../../pages/posts/[postId]";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import postService from "../../services/postService";
 import { useRouter } from "next/router";
 import { useGlobalState } from "../../state";
@@ -25,18 +25,30 @@ const PostDetailContent: React.FC<PostDetailContentProp> = ({
   const router = useRouter();
   const postid = router.query.postId as string;
   const [token] = useGlobalState("token");
-  const handleSubmitForm = async (commnetValue: string) => {
+
+  useEffect(() => {
+    setListComments(initListComment);
+  }, [initListComment]);
+
+  const handleSubmitForm = async (
+    commnetValue: string,
+    callback: (e?: Error) => void
+  ) => {
     try {
       const result = await postService.postComment(postid, commnetValue, token);
-      if (result.status !== 200) throw new Error("Đăng bình luận không thành công!");
+      if (result.status !== 200)
+        throw new Error("Đăng bình luận không thành công!");
       const listCmtRes = await postService.getCommentById(postid);
       if (result.status === 200) {
         setListComments(listCmtRes.comments);
+        callback();
+        alert("Bạn đã đăng bình luận thành công !");
       }
     } catch (e) {
+      callback(e);
       // Khi throw Error thì chạy vào trong catch
     }
-  }
+  };
   return (
     <div className="ass1-section__list">
       <PostItem post={postDetail} />
