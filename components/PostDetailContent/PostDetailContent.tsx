@@ -1,4 +1,3 @@
-import "./PostDetailContent.scss";
 import Link from "next/link";
 import { PostCommentsForm } from "../PostCommentForm";
 import { PostCommentsList } from "../PostCommentsList";

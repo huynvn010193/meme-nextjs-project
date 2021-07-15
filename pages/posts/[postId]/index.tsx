@@ -36,6 +36,8 @@ const PostDetail: NextPage<PostDetailProps> = ({
   userPosts,
   comments,
 }) => {
+  console.log("PostDetail-client");
+
   return (
     <div className="container">
       <div className="row">
@@ -78,7 +80,7 @@ PostDetail.getInitialProps = async (ctx: NextPageContext) => {
       profilepicture: userInfoData?.user?.profilepicture,
     };
   }
-
+  console.log("PostDetail-server");
   return {
     postDetail,
     postCategories: postDetailRes?.data?.categories || [],
