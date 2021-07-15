@@ -11,6 +11,7 @@ type TypePostCreate = {
   url_image: string;
   category: string[];
   obj_image: ObjImage;
+  postid?: string;
 };
 
 const postService = {
@@ -57,6 +58,19 @@ const postService = {
     data.append("category", category.toString());
     data.append("url_image", url_image);
 
+    if (obj_image.file) {
+      data.append("obj_image", obj_image.file);
+    }
+
+    return api.callFormData(url, { data, token });
+  },
+  editPost: async ({post_content, url_image, category, obj_image, postid}: TypePostCreate,token: string) => {
+    const url = "/post/edit.php";
+    const data = new FormData();
+    data.append("post_content", post_content);
+    data.append("category", category.toString());
+    data.append("url_image", url_image);
+    data.append("postid", postid);
     if (obj_image.file) {
       data.append("obj_image", obj_image.file);
     }

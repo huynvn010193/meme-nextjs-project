@@ -1,5 +1,5 @@
 import React from "react";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { NextPage, NextPageContext } from "next";
 import { PostDetailForm } from "../../../components/PostDetailForm";
@@ -16,8 +16,12 @@ type EditPostProps = {
   postCategories: TypeCategory[];
 };
 
-const EditPostPage: NextPage<EditPostProps> = ({ postDetailData, postCategories }) => {
+const EditPostPage: NextPage<EditPostProps> = ({
+  postDetailData,
+  postCategories,
+}) => {
   useAuthen();
+  const router = useRouter();
   const [postData, setPosData] = useState(() => {
     return {
       url_image: postDetailData.url_image,
@@ -25,9 +29,10 @@ const EditPostPage: NextPage<EditPostProps> = ({ postDetailData, postCategories 
       category: postCategories.map((cat) => cat.tag_index),
       obj_image: {
         file: null,
-        base64: ''
-      }
-    }
+        base64: "",
+      },
+      postid: router.query.postId as string,
+    };
   });
   const [currentUser] = useGlobalState("currentUser");
   const [loading, setLoading] = useState(false);
@@ -37,9 +42,9 @@ const EditPostPage: NextPage<EditPostProps> = ({ postDetailData, postCategories 
       setPosData({
         ...postData,
         [key]: value,
-        "url_image": ""
+        url_image: "",
       });
-      return
+      return;
     }
     setPosData({
       ...postData,
@@ -50,11 +55,19 @@ const EditPostPage: NextPage<EditPostProps> = ({ postDetailData, postCategories 
   const handleSubmitPost = () => {
     setLoading(true);
     postService
-      .createNewPost(postData, token)
+      .editPost(postData, token)
       .then((res) => {
         if (res.status === 200) {
           alert("Cập nhật bài viết thành công!");
-          router.push(`/user/${currentUser.USERID}`)
+          setPosData({
+            ...postData,
+            url_image: res?.data?.post?.url_image,
+            obj_image: {
+              file: null,
+              base64: "",
+            },
+          });
+          router.push(`/user/${currentUser.USERID}`);
         } else {
           alert(res.error);
         }
@@ -95,7 +108,7 @@ EditPostPage.getInitialProps = async (ctx: NextPageContext) => {
   return {
     postDetailData: postDetailPos?.data?.post || null,
     postCategories: postDetailPos?.data?.categories || [],
-  }
+  };
 };
 
 export default EditPostPage;
