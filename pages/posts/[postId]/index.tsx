@@ -1,4 +1,5 @@
 import { NextPage, NextPageContext } from "next";
+import { NextSeo } from "next-seo";
 import { PostType } from "../..";
 import { HomeSidebar } from "../../../components/HomeSidebar";
 import { PostDetailContent } from "../../../components/PostDetailContent";
@@ -36,10 +37,26 @@ const PostDetail: NextPage<PostDetailProps> = ({
   userPosts,
   comments,
 }) => {
-  console.log("PostDetail-client");
 
   return (
     <div className="container">
+      <NextSeo
+        title={postDetail.post_content}
+        description={postDetail.post_content}
+        canonical='https://www.canonical.ie/'
+        openGraph={{
+          title: `${postDetail.post_content}`,
+          description: 'Open Graph Description',
+          images: [
+            {
+              url: `${postDetail.url_image}`,
+              width: 800,
+              height: 600,
+              alt: 'Og Image Alt',
+            },
+          ],
+        }}
+      />
       <div className="row">
         <div className="col-lg-8">
           <PostDetailContent
