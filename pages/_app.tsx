@@ -82,6 +82,10 @@ function MyApp({ Component, pageProps, router }: AppProps) {
           href="/fonts/font-awesome/css/font-awesome.css"
         />
         <link rel="stylesheet" href="/fonts/emotion/style.css" />
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        ></meta>
 
         {/* JAVA SCRIPT */}
         {/* require */}
